@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PC Hub | Gaming &amp; Study Computer Rental</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" onclick="showPage('landing'); return false;" aria-label="PC Hub home">
+      <span class="brand-mark" aria-hidden="true">P</span>
+      <span>PC<span class="brand-accent">HUB</span><small>COMPUTER LOUNGE</small></span>
+    </a>
+    <nav id="nav" class="hidden" aria-label="Customer features">
+      <button onclick="showPage('dashboard')" data-page="dashboard"><span class="nav-icon" aria-hidden="true">⌂</span>Dashboard</button>
+      <button onclick="showPage('computers')" data-page="computers"><span class="nav-icon" aria-hidden="true">▣</span>Rent a PC</button>
+      <button onclick="showPage('session')" data-page="session"><span class="nav-icon" aria-hidden="true">◷</span>Active Session</button>
+      <button onclick="showPage('history')" data-page="history"><span class="nav-icon" aria-hidden="true">↺</span>Rental History</button>
+      <button class="nav-logout" onclick="logout()"><span class="nav-icon" aria-hidden="true">↪</span>Log out</button>
+    </nav>
+  </header>
+
+  <main>
+    <p id="appError" class="app-error hidden" role="alert" aria-live="assertive"></p>
+    <section id="landing" class="landing-page">
+      <div class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="live-dot"></span> YOUR LOCAL PC LOUNGE</div>
+          <h1>Rent a PC.<br><span>Play your way.</span></h1>
+          <p class="hero-description">Need a computer for gaming, studying, or browsing? Rent one of our shop PCs by the hour and use it right here at the internet café.</p>
+          <div class="actions hero-actions">
+            <button class="primary" onclick="showPage('register')">Browse available PCs <span aria-hidden="true">↗</span></button>
+            <button class="text-action" onclick="showPage('login')">Already a member? <strong>Log in</strong></button>
+          </div>
+          <div class="hero-proof">
+            <span>FOR THE GAME</span><i></i><span>FOR THE GRIND</span><i></i><span>FOR THE IN-BETWEEN</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Illustration of a computer available to rent in the shop" role="img">
+          <div class="art-glow"></div>
+          <div class="art-tag"><span class="live-dot"></span> YOUR SEAT IS WAITING</div>
+          <div class="monitor">
+            <div class="monitor-screen">
+              <div class="screen-grid"></div>
+              <div class="screen-sun"></div>
+              <div class="screen-horizon"></div>
+              <div class="screen-caption"><span>PC HUB</span><strong>AVAILABLE<br>TO RENT</strong></div>
+              <div class="screen-bars"><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="monitor-frame"><div class="camera-dot"></div></div>
+            <div class="monitor-neck"></div>
+            <div class="monitor-base"></div>
+          </div>
+          <div class="tower"><div class="tower-light"></div><div class="fan fan-one"></div><div class="fan fan-two"></div><div class="tower-lines"></div></div>
+          <div class="desk"></div>
+          <div class="keyboard"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="art-price"><span>STARTING AT</span><strong>₱50 <small>/ HR</small></strong></div>
+          <div class="art-spark spark-one">✳</div><div class="art-spark spark-two">✦</div>
+        </div>
+      </div>
+
+      <div class="quick-facts" aria-label="Shop highlights">
+        <div><span class="fact-number">01</span><span><strong>Ready-to-play PCs</strong><small>Just sit down and start</small></span></div>
+        <div><span class="fact-number">02</span><span><strong>Easy hourly rental</strong><small>Stay for as long as you need</small></span></div>
+        <div><span class="fact-number">03</span><span><strong>Friendly on your wallet</strong><small>Only ₱50 per hour</small></span></div>
+      </div>
+
+      <div class="welcome-strip">
+        <div><span class="section-kicker">THE PROJECT</span><h2>Rent a computer at the shop.</h2></div>
+        <p>A Computer Shop Rental System for managing in-store PC rentals, session time, and customer transactions at an internet café.</p>
+        <button class="outline-action" onclick="showPage('register')">Rent a computer <span aria-hidden="true">→</span></button>
+      </div>
+
+      <div class="project-overview">
+        <div class="project-heading">
+          <span class="section-kicker">PROPOSED SYSTEM</span>
+          <h2>Choose a shop PC.<br>Rent it by the hour.</h2>
+          <p>Customers select an available PC at the shop and choose how long they need to use it on-site. The system calculates the rental fee using the hourly rate.</p>
+        </div>
+        <div class="project-details">
+          <div class="project-feature-list" aria-label="Proposed system features">
+            <div><span>01</span><strong>Check computer availability</strong><small>View which computers are available or occupied.</small></div>
+            <div><span>02</span><strong>Start and manage a session</strong><small>Choose rental hours, calculate the fee, extend time, check remaining time, or end a session.</small></div>
+            <div><span>03</span><strong>Handle customer payment</strong><small>Check if payment is enough and calculate the change due.</small></div>
+            <div><span>04</span><strong>Process more customers</strong><small>Keep the rental system running for multiple customers and transactions.</small></div>
+          </div>
+          <div class="project-logic">
+            <span class="section-kicker">PROGRAMMING CONCEPTS</span>
+            <div><strong>CONDITIONALS</strong><span>Check availability, rental time, and payment.</span></div>
+            <div><strong>SWITCH</strong><span>Handle rent, extend, check time, and end-session actions.</span></div>
+            <div><strong>LOOPS</strong><span>Continue processing customers until the system closes.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="login" class="auth-page hidden">
+      <div class="auth-visual">
+        <div class="auth-story">
+          <span class="auth-eyebrow"><span class="live-dot"></span> PC HUB / MEMBER ACCESS</span>
+          <h1>Back for<br><span>another session?</span></h1>
+          <p>Log in to check your rental, see your remaining session time, or rent an available computer at the shop.</p>
+        </div>
+        <div class="auth-setup" aria-hidden="true">
+          <div class="auth-screen"><span>PC HUB</span><strong>YOUR IN-SHOP<br>PC SESSION</strong><i></i></div>
+          <div class="auth-stand"></div>
+          <div class="auth-tower"><i></i><i></i><b></b></div>
+          <div class="auth-desk"></div>
+          <div class="auth-keyboard"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="auth-visual-foot"><span>YOUR TIME. YOUR SPACE.</span><span>GAME · STUDY · REPEAT</span></div>
+      </div>
+      <div class="auth-content">
+        <div class="auth-form-shell">
+          <span class="auth-kicker">PC HUB CUSTOMER LOGIN</span>
+          <h2>Log in to your account</h2>
+          <p class="auth-intro">Sign in to rent an available shop computer or manage your active rental.</p>
+          <form id="loginForm">
+            <label for="loginEmail">Gmail address</label><input id="loginEmail" type="email" required autocomplete="email" placeholder="you@gmail.com">
+            <label for="loginPassword">Password</label>
+            <div class="password-field">
+              <input id="loginPassword" type="password" required autocomplete="current-password">
+              <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false" aria-controls="loginPassword">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle><path class="eye-slash" d="m4 4 16 16"></path></svg>
+              </button>
+            </div>
+            <p id="loginError" class="error"></p>
+            <button type="submit" class="primary">Login <span aria-hidden="true">→</span></button>
+          </form>
+          <p class="muted auth-switch">No account yet? <button class="link" onclick="showPage('register')">Register here</button></p>
+          <p class="muted auth-switch">PC Hub staff? <button class="link" onclick="openAdminAccess()">Admin access</button></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="adminLogin" class="auth-page hidden">
+      <div class="auth-visual">
+        <div class="auth-story">
+          <span class="auth-eyebrow"><span class="live-dot"></span> PC HUB / STAFF ACCESS</span>
+          <h1>Run the lounge.<br><span>Know every session.</span></h1>
+          <p>Review computer activity, returning customers, transactions, and staff access from one place.</p>
+        </div>
+        <div class="auth-setup" aria-hidden="true">
+          <div class="auth-screen"><span>PC HUB</span><strong>LOUNGE<br>CONTROL</strong><i></i></div>
+          <div class="auth-stand"></div>
+          <div class="auth-tower"><i></i><i></i><b></b></div>
+          <div class="auth-desk"></div>
+          <div class="auth-keyboard"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="auth-visual-foot"><span>STAFF DASHBOARD</span><span>PC HUB / ADMIN</span></div>
+      </div>
+      <div class="auth-content">
+        <div class="auth-form-shell">
+          <span class="auth-kicker">PC HUB ADMIN LOGIN</span>
+          <h2>Welcome back, admin</h2>
+          <p class="auth-intro">Sign in with your Supabase account after an administrator grants it admin access.</p>
+          <form id="adminLoginForm">
+            <label for="adminLoginEmail">Gmail address</label><input id="adminLoginEmail" type="email" required autocomplete="username" placeholder="admin@gmail.com">
+            <label for="adminLoginPassword">Password</label>
+            <div class="password-field">
+              <input id="adminLoginPassword" type="password" required autocomplete="current-password">
+              <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false" aria-controls="adminLoginPassword">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle><path class="eye-slash" d="m4 4 16 16"></path></svg>
+              </button>
+            </div>
+            <p id="adminLoginError" class="error" aria-live="polite"></p>
+            <button type="submit" class="primary">Admin login <span aria-hidden="true">→</span></button>
+          </form>
+          <p id="adminSetupPrompt" class="muted auth-switch">First time setting up? <button class="link" onclick="showPage('adminSetup')">View setup steps</button></p>
+          <p class="muted auth-switch"><button class="link" onclick="showPage('login')">Back to customer login</button></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="adminSetup" class="auth-page hidden">
+      <div class="auth-visual">
+        <div class="auth-story">
+          <span class="auth-eyebrow"><span class="live-dot"></span> PC HUB / FIRST-RUN SETUP</span>
+          <h1>Set up your<br><span>lounge admin.</span></h1>
+          <p>Create your account first, then promote it to admin from Supabase. This prevents visitors from granting themselves administrator access.</p>
+        </div>
+        <div class="auth-setup" aria-hidden="true">
+          <div class="auth-screen"><span>PC HUB</span><strong>ADMIN<br>SETUP</strong><i></i></div>
+          <div class="auth-stand"></div>
+          <div class="auth-tower"><i></i><i></i><b></b></div>
+          <div class="auth-desk"></div>
+          <div class="auth-keyboard"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="auth-visual-foot"><span>ONE-TIME SETUP</span><span>PC HUB / ADMIN</span></div>
+      </div>
+      <div class="auth-content">
+        <div class="auth-form-shell">
+          <span class="auth-kicker">CREATE FIRST ADMIN</span>
+          <h2>Secure your dashboard</h2>
+          <p class="auth-intro">Register with your @gmail.com address, then promote that account using the Supabase SQL Editor.</p>
+          <ol class="admin-setup-steps">
+            <li><span>01</span><div><strong>Register your account</strong><p>Use the Gmail address you want for the first admin.</p><button class="link" onclick="showPage('register')">Open registration</button></div></li>
+            <li><span>02</span><div><strong>Run this in Supabase SQL Editor</strong><code>update public.profiles set role = 'admin' where email = lower('your-admin@gmail.com');</code><small>Replace the sample address with your registered Gmail.</small></div></li>
+            <li><span>03</span><div><strong>Sign in as admin</strong><p>Return here and use the same email and password.</p><button class="link" onclick="showPage('adminLogin')">Go to admin login</button></div></li>
+          </ol>
+          <p class="muted auth-switch"><button class="link" onclick="showPage('adminLogin')">Back to admin login</button></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="register" class="auth-page hidden">
+      <div class="auth-visual">
+        <div class="auth-story">
+          <span class="auth-eyebrow"><span class="live-dot"></span> YOUR LOCAL PC LOUNGE</span>
+          <h1>Your next PC<br><span>session starts here.</span></h1>
+          <p>Create an account to rent a computer at our shop for gaming, studying, browsing, and more.</p>
+        </div>
+        <div class="auth-setup" aria-hidden="true">
+          <div class="auth-screen"><span>PC HUB</span><strong>AVAILABLE<br>TO RENT</strong><i></i></div>
+          <div class="auth-stand"></div>
+          <div class="auth-tower"><i></i><i></i><b></b></div>
+          <div class="auth-desk"></div>
+          <div class="auth-keyboard"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="auth-visual-foot"><span>START YOUR NEXT SESSION</span><span>FROM ₱50 / HOUR</span></div>
+      </div>
+      <div class="auth-content">
+        <div class="auth-form-shell">
+          <span class="auth-kicker">NEW PC HUB CUSTOMER</span>
+          <h2>Create your rental account</h2>
+          <p class="auth-intro">Register to choose an available computer and the number of hours you need at the shop.</p>
+          <form id="registerForm">
+            <label for="regName">Full Name</label><input id="regName" required maxlength="60" autocomplete="name">
+            <label for="regEmail">Gmail address</label><input id="regEmail" type="email" required autocomplete="email" placeholder="you@gmail.com">
+            <label for="regPassword">Password (at least 6 characters)</label>
+            <div class="password-field">
+              <input id="regPassword" type="password" required minlength="6" autocomplete="new-password">
+              <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false" aria-controls="regPassword">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle><path class="eye-slash" d="m4 4 16 16"></path></svg>
+              </button>
+            </div>
+            <label for="regConfirm">Confirm Password</label>
+            <div class="password-field">
+              <input id="regConfirm" type="password" required minlength="6" autocomplete="new-password">
+              <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false" aria-controls="regConfirm">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle><path class="eye-slash" d="m4 4 16 16"></path></svg>
+              </button>
+            </div>
+            <p id="regError" class="error"></p>
+            <button type="submit" class="primary">Create account <span aria-hidden="true">→</span></button>
+          </form>
+          <p class="muted auth-switch">Have an account? <button class="link" onclick="showPage('login')">Login here</button></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard" class="user-dashboard hidden">
+      <div class="dashboard-welcome">
+        <div class="dashboard-greeting">
+          <span class="dashboard-kicker">CUSTOMER DASHBOARD</span>
+          <h1 id="welcome">Welcome back!</h1>
+          <p>Choose an available computer and start your rental session.</p>
+        </div>
+        <div class="dashboard-metrics">
+          <div class="dashboard-metric"><span>AVAILABLE PCS</span><strong><span id="availableCount">0</span><small> / <span id="totalPcCount">0</span></small></strong></div>
+          <div class="dashboard-metric"><span>HOURLY RATE</span><strong>₱50<small> / hour</small></strong></div>
+          <div class="dashboard-metric"><span>MY ACTIVE RENTAL</span><strong id="activeCount">0</strong></div>
+        </div>
+      </div>
+
+      <div class="dashboard-section-heading">
+        <div><span class="dashboard-kicker">PICK A COMPUTER</span><h2>Computer availability</h2></div>
+        <button class="dashboard-text-button" onclick="showPage('computers')">View all PCs <span aria-hidden="true">→</span></button>
+      </div>
+      <div id="dashboardPcList" class="dashboard-pc-list" aria-live="polite"></div>
+
+      <div class="dashboard-rental">
+        <div class="dashboard-rental-heading">
+          <span class="dashboard-kicker">YOUR SESSION</span>
+          <h2>My current rental</h2>
+        </div>
+        <div id="dashboardRentalContent" class="dashboard-rental-content"></div>
+      </div>
+    </section>
+
+    <section id="computers" class="computer-page hidden">
+      <div class="dashboard-section-heading computer-page-heading">
+        <div><span class="dashboard-kicker">PC HUB RENTAL FLOOR</span><h1>Rent a PC</h1></div>
+        <p>Choose an available shop computer. Rentals start at ₱50 per hour.</p>
+      </div>
+      <div id="pcList" class="dashboard-pc-list" aria-live="polite"></div>
+    </section>
+
+    <section id="rent" class="rent-page hidden">
+      <header class="rent-heading">
+        <div><span class="dashboard-kicker">PC HUB / RENTAL CHECKOUT</span><h1>Confirm your rental</h1></div>
+        <p>Review your selected computer and session length before confirming.</p>
+      </header>
+      <div class="rent-layout">
+        <div class="rent-selection">
+          <span class="rent-step">YOUR SELECTED COMPUTER</span>
+          <h2 id="selectedPc">Selected Computer</h2>
+          <p id="selectedSpecs" class="rent-specs"></p>
+          <div class="form-group rent-duration"><label for="duration">How long would you like to rent?</label>
+            <select id="duration" onchange="updateTotal()">
+              <option value="1">1 Hour</option><option value="2">2 Hours</option>
+              <option value="3">3 Hours</option><option value="4">4 Hours</option>
+              <option value="5">5 Hours</option>
+            </select>
+          </div>
+          <div class="rent-actions"><button class="rent-back" onclick="showPage('computers')"><span aria-hidden="true">←</span> Back to computers</button><button class="primary rent-confirm" onclick="confirmRental()">Confirm rental <span aria-hidden="true">→</span></button></div>
+        </div>
+        <aside class="rent-summary">
+          <span class="rent-step">PRICE BREAKDOWN</span>
+          <h2>Rental summary</h2>
+          <div class="summary-line"><span>Computer</span><strong id="summaryPc"></strong></div>
+          <div class="summary-line"><span>Price per hour</span><strong>₱50</strong></div>
+          <div class="summary-line"><span>Duration</span><strong id="summaryDuration">1 hour</strong></div>
+          <div class="summary-line rent-total"><span>Total due at the shop</span><strong id="totalPrice">₱50</strong></div>
+          <p class="rent-payment-note"><span aria-hidden="true">ⓘ</span> Payment is completed at the shop. No payment is taken online.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="session" class="activity-page hidden">
+      <div class="activity-heading">
+        <div><span class="dashboard-kicker">YOUR CURRENT PC RENTAL</span><h1>Active session</h1></div>
+        <p>Keep track of your time and rental details while you use the computer at the shop.</p>
+      </div>
+      <div id="sessionDetails" class="session-panel"></div>
+    </section>
+
+    <section id="history" class="activity-page hidden">
+      <div class="activity-heading">
+        <div><span class="dashboard-kicker">YOUR PC HUB ACTIVITY</span><h1>Rental history</h1></div>
+        <p>Review your previous computer rentals, session lengths, and rental totals.</p>
+      </div>
+      <div class="history-summary">
+        <div><span>TOTAL RENTALS</span><strong id="historyTotal">0</strong></div>
+        <div><span>COMPLETED</span><strong id="historyCompleted">0</strong></div>
+        <div><span>TOTAL SPENT</span><strong id="historySpent">₱0</strong></div>
+      </div>
+      <div class="history-table-wrap">
+        <table class="history-table">
+          <thead><tr><th>Date &amp; time</th><th>Computer</th><th>Duration</th><th>Total</th><th>Status</th></tr></thead>
+          <tbody id="historyRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="adminDashboard" class="admin-dashboard hidden">
+      <aside class="admin-sidebar" aria-label="Admin dashboard sections">
+        <div class="admin-sidebar-heading"><span class="dashboard-kicker">LOUNGE CONTROL</span><strong>Admin panel</strong></div>
+        <nav class="admin-side-nav">
+          <button class="active" type="button" data-admin-view="overview" onclick="showAdminView('overview')"><span aria-hidden="true">▦</span>Overview</button>
+          <button type="button" data-admin-view="returning" onclick="showAdminView('returning')"><span aria-hidden="true">↺</span>Returning customers</button>
+          <button type="button" data-admin-view="transactions" onclick="showAdminView('transactions')"><span aria-hidden="true">⇄</span>Transactions</button>
+          <button type="button" data-admin-view="team" onclick="showAdminView('team')"><span aria-hidden="true">♙</span>Admin accounts</button>
+        </nav>
+        <p class="admin-sidebar-note">Prototype dashboard<br>Data saved in this browser</p>
+      </aside>
+      <div class="admin-main">
+        <header class="admin-topline">
+          <div><span class="dashboard-kicker">PC HUB / ADMINISTRATION</span><h1 id="adminWelcome">Lounge overview</h1></div>
+          <button class="admin-logout" onclick="logout()">Log out <span aria-hidden="true">↗</span></button>
+        </header>
+
+        <div id="adminView-overview" class="admin-view">
+          <p class="admin-lead">Live snapshot of your computer lounge and rental activity.</p>
+          <div class="admin-stat-grid">
+            <div class="admin-stat"><span>COMPUTERS AVAILABLE</span><strong id="adminAvailablePcs">0</strong><small id="adminPcCapacity">of 30 computers</small></div>
+            <div class="admin-stat"><span>ACTIVE SESSIONS</span><strong id="adminActiveSessions">0</strong><small>currently in use</small></div>
+            <div class="admin-stat"><span>TOTAL RENTALS</span><strong id="adminTotalRentals">0</strong><small>all recorded sessions</small></div>
+            <div class="admin-stat"><span>RENTAL REVENUE</span><strong id="adminRevenue">₱0</strong><small>recorded rental totals</small></div>
+          </div>
+          <div class="admin-overview-grid">
+            <section class="admin-panel">
+              <div class="admin-panel-heading"><div><span class="dashboard-kicker">FLOOR STATUS</span><h2>Computer lounge</h2></div><span id="adminOccupancy" class="admin-occupancy"></span></div>
+              <div id="adminPcStatus" class="admin-pc-status"></div>
+            </section>
+            <section class="admin-panel">
+              <div class="admin-panel-heading"><div><span class="dashboard-kicker">LATEST ACTIVITY</span><h2>Recent transactions</h2></div><button class="admin-inline-link" onclick="showAdminView('transactions')">All transactions →</button></div>
+              <div id="adminRecentTransactions" class="admin-recent-list"></div>
+            </section>
+          </div>
+        </div>
+
+        <div id="adminView-returning" class="admin-view hidden">
+          <p class="admin-lead">See who keeps coming back to PC Hub and how often they rent.</p>
+          <div class="admin-stat-grid admin-stat-grid-compact">
+            <div class="admin-stat"><span>RETURNING CUSTOMERS</span><strong id="adminReturningCount">0</strong><small>more than one rental</small></div>
+            <div class="admin-stat"><span>RENTING CUSTOMERS</span><strong id="adminCustomerCount">0</strong><small>with at least one rental</small></div>
+          </div>
+          <section class="admin-panel">
+            <div class="admin-panel-heading"><div><span class="dashboard-kicker">CUSTOMER LOYALTY</span><h2>Most frequent customers</h2></div></div>
+            <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Customer</th><th>Email</th><th>Total rentals</th><th>Total spent</th><th>Last visit</th></tr></thead><tbody id="adminReturningRows"></tbody></table></div>
+          </section>
+        </div>
+
+        <div id="adminView-transactions" class="admin-view hidden">
+          <p class="admin-lead">Every rental session recorded by the customer system.</p>
+          <section class="admin-panel">
+            <div class="admin-panel-heading"><div><span class="dashboard-kicker">RENTAL RECORDS</span><h2>All transactions</h2></div></div>
+            <div class="admin-table-wrap"><table class="admin-table admin-transactions-table"><thead><tr><th>Date &amp; time</th><th>Customer</th><th>Email</th><th>Computer</th><th>Duration</th><th>Total</th><th>Status</th></tr></thead><tbody id="adminTransactionRows"></tbody></table></div>
+          </section>
+        </div>
+
+        <div id="adminView-team" class="admin-view hidden">
+          <p class="admin-lead">Grant admin access to trusted staff who already have a customer account.</p>
+          <div class="admin-team-grid">
+            <section class="admin-panel admin-add-admin">
+              <div class="admin-panel-heading"><div><span class="dashboard-kicker">STAFF ACCESS</span><h2>Grant admin access</h2></div></div>
+              <form id="addAdminForm">
+                <label for="newAdminEmail">Registered Gmail address</label><input id="newAdminEmail" type="email" required autocomplete="email" placeholder="staff@gmail.com">
+                <p class="admin-form-help">Ask the staff member to register first. They keep their own password; this grants admin access to that account.</p>
+                <label for="newAdminPassword" hidden>Password (at least 6 characters)</label>
+                <div class="password-field" hidden>
+                  <input id="newAdminPassword" type="password" disabled autocomplete="new-password">
+                  <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false" aria-controls="newAdminPassword">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle><path class="eye-slash" d="m4 4 16 16"></path></svg>
+                  </button>
+                </div>
+                <label for="newAdminConfirm" hidden>Confirm password</label>
+                <div class="password-field" hidden>
+                  <input id="newAdminConfirm" type="password" disabled autocomplete="new-password">
+                  <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false" aria-controls="newAdminConfirm">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7S18.4 19 12 19 2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle><path class="eye-slash" d="m4 4 16 16"></path></svg>
+                  </button>
+                </div>
+                <p id="addAdminError" class="admin-form-message error" aria-live="polite"></p>
+                <p id="addAdminSuccess" class="admin-form-message success" aria-live="polite"></p>
+                <button type="submit" class="primary">Grant admin access <span aria-hidden="true">→</span></button>
+              </form>
+            </section>
+            <section class="admin-panel">
+              <div class="admin-panel-heading"><div><span class="dashboard-kicker">AUTHORIZED STAFF</span><h2>Admin accounts</h2></div></div>
+              <div id="adminAccountList" class="admin-account-list"></div>
+            </section>
+          </div>
+          <p class="admin-security-note">Authentication and rental records are stored in Supabase. Passwords are managed by Supabase Auth.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
